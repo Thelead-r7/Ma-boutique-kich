@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion Admin</title>
+</head>
+<body>
+  <h2>Connexion à l'espace Admin</h2>
+
+  <input type="email" id="email" placeholder="Email"><br><br>
+  <input type="password" id="password" placeholder="Mot de passe"><br><br>
+  <button onclick="login()">Se connecter</button>
+
+  <p id="message"></p>
+
+  <!-- Firebase V9 non modulaire compatible navigateur -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
+
+  <script>
+    // Configuration de ton projet Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDbWooIKgnqeXbbutYyElaAxSH8W5-7ZdE",
+      authDomain: "le-groupe-lead.firebaseapp.com",
+      projectId: "le-groupe-lead",
+      storageBucket: "le-groupe-lead.firebasestorage.app",
+      messagingSenderId: "1009143995478",
+      appId: "1:1009143995478:web:2dc59a2f9daf25025a2ff7"
+    };
+
+    // Initialiser Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Fonction de connexion
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = "admin.html"; // Redirige vers la page admin
+        })
+        .catch((error) => {
+          document.getElementById("message").innerText = "Erreur : " + error.message;
+        });
+    }
+  </script>
+</body>
+</html>
