@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Commandes</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .commande {
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+    .commande strong {
+      display: block;
+      margin-top: 5px;
+    }
+    .produits {
+      margin-top: 10px;
+      padding-left: 15px;
+    }
+    .produits li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📦 Liste des commandes clients</h2>
+  <div id="commandes"></div>
+
+  <!-- Firebase V10 SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+
+  <script>
+    // Configuration Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDbWooIKgnqeXbbutYyElaAxSH8W5-7ZdE",
+      authDomain: "le-groupe-lead.firebaseapp.com",
+      projectId: "le-groupe-lead",
+      storageBucket: "le-groupe-lead.firebasestorage.app",
+      messagingSenderId: "1009143995478",
+      appId: "1:1009143995478:web:2dc59a2f9daf25025a2ff7"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const commandesDiv = document.getElementById("commandes");
+
+    // Charger les commandes depuis Firestore
+    db.collection("commandes").orderBy("date", "desc").get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          commandesDiv.innerHTML = "<p>Aucune commande trouvée.</p>";
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.className = "commande";
+
+          let produitsHTML = "<ul class='produits'>";
+          data.produits.forEach(p => {
+            produitsHTML += `<li>${p.nom} x ${p.quantite} - ${p.prix.toLocaleString()} FCFA</li>`;
+          });
+          produitsHTML += "</ul>";
+
+          div.innerHTML = `
+            <strong>👤 Client : ${data.nom}</strong>
+            <strong>📞 Téléphone : ${data.telephone}</strong>
+            <strong>🏠 Adresse : ${data.adresse}</strong>
+            <strong>🗓️ Date : ${data.date}</strong>
+            <strong>🛍️ Produits :</strong>
+            ${produitsHTML}
+          `;
+          commandesDiv.appendChild(div);
+        });
+      })
+      .catch(err => {
+        console.error("Erreur de chargement :", err);
+        commandesDiv.innerHTML = "<p>Erreur lors du chargement des commandes.</p>";
+      });
+  </script>
+</body>
+</html>
