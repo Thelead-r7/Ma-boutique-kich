@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Détail du produit</title>
+  <style>
+    body { font-family: Arial; margin: 0; background: #f4f4f4; padding: 20px; }
+    .produit-detail {
+      background: white;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    h1 { font-size: 22px; color: #333; }
+    p { color: #444; margin: 10px 0; }
+    .prix { font-size: 20px; color: green; font-weight: bold; }
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      background-color: #ff9900;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+    #confirmation {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="produit-detail" id="detail"></div>
+  <div id="confirmation"></div>
+
+  <script src="produit.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = parseInt(urlParams.get("id"));
+    const produit = produits.find(p => p.id === id);
+
+    if (produit) {
+      document.getElementById("detail").innerHTML = `
+        <img src="${produit.image}" alt="${produit.nom}">
+        <h1>${produit.nom}</h1>
+        <p>${produit.description}</p>
+        <p class="prix">${produit.prix.toLocaleString()} FCFA</p>
+        <button onclick="ajouterAuPanier()">Ajouter au panier</button>
+      `;
+    } else {
+      document.getElementById("detail").innerHTML = "<p>Produit introuvable.</p>";
+    }
+
+    function ajouterAuPanier() {
+      const panier = JSON.parse(localStorage.getItem("panier")) || [];
+      const index = panier.findIndex(item => item.id === produit.id);
+
+      if (index !== -1) {
+        panier[index].quantite += 1;
+      } else {
+        panier.push({
+          id: produit.id,
+          nom: produit.nom,
+          prix: produit.prix,
+          quantite: 1
+        });
+      }
+
+      localStorage.setItem("panier", JSON.stringify(panier));
+      document.getElementById("confirmation").innerText = "✅ Ajouté au panier !";
+    }
+  </script>
+
+</body>
+</html>
