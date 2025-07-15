@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ma Boutique - Produits</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      background: #f4f4f4;
+    }
+    header, footer {
+      background: #ff9900;
+      color: white;
+      text-align: center;
+      padding: 15px;
+    }
+    nav {
+      background: #333;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* Barre recherche + filtre */
+    #filtre-produit {
+      margin: 20px auto;
+      max-width: 900px;
+      text-align: center;
+    }
+    #recherche {
+      padding: 10px;
+      width: 60%;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    #categorie {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-left: 10px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
+      padding: 15px;
+    }
+    .product {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .product img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    .product h3 {
+      margin: 10px 0 5px;
+    }
+    .product p {
+      color: green;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .product button {
+      background: #ff9900;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    #confirmation {
+      text-align: center;
+      margin: 10px 0;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Ma Boutique</header>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="produits.html">Produits</a>
+    <a href="panier.html">Panier</a>
+  </nav>
+
+  <div id="filtre-produit">
+    <input type="text" id="recherche" placeholder="Rechercher un produit...">
+    <select id="categorie">
+      <option value="tous">Toutes catégories</option>
+      <option value="electronique">Électronique</option>
+      <option value="mode">Mode</option>
+      <option value="maison">Maison</option>
+      <!-- Ajoute ici d'autres catégories si besoin -->
+    </select>
+  </div>
+
+  <div id="confirmation"></div>
+
+  <div class="products" id="products"></div>
+
+  <footer>
+    &copy; 2025 Ma Boutique. Tous droits réservés.
+  </footer>
+
+  <script src="produit.js"></script>
+  <script>
+    const container = document.getElementById("products");
+    const confirmation = document.getElementById("confirmation");
+    const rechercheInput = document.getElementById("recherche");
+    const categorieSelect = document.getElementById("categorie");
+
+    // Fonction qui affiche les produits passés en paramètre
+    function afficherProduits(listeProduits) {
+      container.innerHTML = "";
+      if (listeProduits.length === 0) {
+        container.innerHTML = "<p style='grid-column: 1/-1; text-align:center;'>Aucun produit trouvé.</p>";
+        return;
+      }
+      listeProduits.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <a href="produit.html?id=${p.id}">
+            <img src="${p.image}" alt="${p.nom}">
+            <h3>${p.nom}</h3>
+          </a>
+          <p>${p.prix.toLocaleString()} FCFA</p>
+          <button onclick="ajouterAuPanier(${p.id})">Ajouter au panier</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Fonction ajouter au panier
+    function ajouterAuPanier(id) {
+      const produit = produits.find(p => p.id === id);
+      const panier = JSON.parse(localStorage.getItem("panier")) || [];
+
+      const index = panier.findIndex(item => item.id === produit.id);
+      if (index !== -1) {
+        panier[index].quantite += 1;
+      } else {
+        panier.push({
+          id: produit.id,
+          nom: produit.nom,
+          prix: produit.prix,
+          quantite: 1
+        });
+      }
+
+      localStorage.setItem("panier", JSON.stringify(panier));
+      confirmation.innerText = `${produit.nom} ajouté au panier ✅`;
+
+      setTimeout(() => {
+        confirmation.innerText = "";
+      }, 2000);
+    }
+
+    // Fonction filtrage
+    function filtreProduits() {
+      const recherche = rechercheInput.value.toLowerCase();
+      const categorie = categorieSelect.value;
+
+      const produitsFiltres = produits.filter(p => {
+        // Assure que les produits ont une catégorie définie (sinon 'autre')
+        const cat = p.categorie || "autre";
+        const matchNom = p.nom.toLowerCase().includes(recherche);
+        const matchCat = categorie === "tous" || cat === categorie;
+        return matchNom && matchCat;
+      });
+
+      afficherProduits(produitsFiltres);
+    }
+
+    // Événements sur recherche et filtre
+    rechercheInput.addEventListener("input", filtreProduits);
+    categorieSelect.addEventListener("change", filtreProduits);
+
+    // Au chargement, afficher tous
+    window.onload = () => {
+      // Pour s'assurer que les produits ont une catégorie, sinon 'autre'
+      produits.forEach(p => {
+        if (!p.categorie) p.categorie = "autre";
+      });
+      afficherProduits(produits);
+    };
+  </script>
+
+</body>
+        </html>
