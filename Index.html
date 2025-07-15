@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ma Boutique - Accueil</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    header {
+      background-color: #ff9900;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    nav {
+      background-color: #333;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .banner {
+      width: 100%;
+      height: 200px;
+      background: url('https://via.placeholder.com/1200x200/ff9900/ffffff?text=Promo+Spéciale') no-repeat center;
+      background-size: cover;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin-left: 15px;
+      color: #333;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
+      padding: 15px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 10px;
+      text-align: center;
+    }
+
+    .product img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .product h3 {
+      font-size: 16px;
+      margin: 10px 0 5px;
+    }
+
+    .product p {
+      color: green;
+      font-weight: bold;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    Ma Boutique
+  </header>
+
+  <nav>
+    <a href="#">Accueil</a>
+    <a href="#">Catégories</a>
+    <a href="#">Connexion</a>
+    <a href="#">Panier</a>
+  </nav>
+
+  <div class="banner"></div>
+
+  <h2>🔥 Promotions du jour</h2>
+
+  <section class="products">
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Produit 1">
+      <h3>Smartphone X100</h3>
+      <p>59 000 FCFA</p>
+    </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Produit 2">
+      <h3>Casque Bluetooth</h3>
+      <p>12 000 FCFA</p>
+    </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Produit 3">
+      <h3>Chaussures Sport</h3>
+      <p>18 000 FCFA</p>
+    </div>
+    <div class="product">
+      <img src="https://via.placeholder.com/150" alt="Produit 4">
+      <h3>Téléviseur 32”</h3>
+      <p>95 000 FCFA</p>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 - Ma Boutique. Tous droits réservés.
+  </footer>
+
+</body>
+</html>
