@@ -2,9 +2,15 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ma Boutique - Accueil</title>
   <style>
+    :root {
+      --couleur-primaire: #ff9900;
+      --fond-sombre: #333;
+      --texte-clair: #fff;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -12,24 +18,33 @@
     }
 
     header {
-      background-color: #ff9900;
-      color: white;
-      padding: 15px;
+      background-color: var(--couleur-primaire);
+      color: var(--texte-clair);
+      padding: 1rem;
       text-align: center;
-      font-size: 24px;
+      font-size: 1.8rem;
     }
 
     nav {
-      background-color: #333;
+      background-color: var(--fond-sombre);
       display: flex;
-      justify-content: space-around;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
       padding: 10px;
     }
 
     nav a {
-      color: white;
+      color: var(--texte-clair);
       text-decoration: none;
       font-weight: bold;
+      padding: 10px;
+      transition: background 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #444;
+      border-radius: 5px;
     }
 
     .banner {
@@ -58,45 +73,65 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       padding: 10px;
       text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .product:hover {
+      transform: scale(1.03);
     }
 
     .product img {
       width: 100%;
-      height: 120px;
+      height: 140px;
       object-fit: cover;
       border-radius: 5px;
     }
 
     .product h3 {
-      font-size: 16px;
+      font-size: 1rem;
       margin: 10px 0 5px;
     }
 
     .product p {
       color: green;
       font-weight: bold;
+      font-size: 1rem;
     }
 
     footer {
-      background-color: #333;
-      color: white;
+      background-color: var(--fond-sombre);
+      color: var(--texte-clair);
       text-align: center;
-      padding: 10px;
+      padding: 15px;
       margin-top: 30px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.5rem;
+      }
+
+      .product img {
+        height: 120px;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    Ma Boutique
-  </header>
+  <header>Ma Boutique</header>
 
   <nav>
     <a href="index.html">Accueil</a>
-    <a href="produits.html">Catégories</a>
-    <a href="admin-login.html">Connexion</a>
+    <a href="produits.html">Produits</a>
     <a href="panier.html">Panier</a>
+    <a href="admin-login.html">Connexion</a>
   </nav>
 
   <div class="banner"></div>
@@ -105,22 +140,22 @@
 
   <section class="products">
     <div class="product">
-      <img src="https://via.placeholder.com/150" alt="Produit 1" />
+      <img src="https://via.placeholder.com/150" alt="Produit 1">
       <h3>Smartphone X100</h3>
       <p>59 000 FCFA</p>
     </div>
     <div class="product">
-      <img src="https://via.placeholder.com/150" alt="Produit 2" />
+      <img src="https://via.placeholder.com/150" alt="Produit 2">
       <h3>Casque Bluetooth</h3>
       <p>12 000 FCFA</p>
     </div>
     <div class="product">
-      <img src="https://via.placeholder.com/150" alt="Produit 3" />
+      <img src="https://via.placeholder.com/150" alt="Produit 3">
       <h3>Chaussures Sport</h3>
       <p>18 000 FCFA</p>
     </div>
     <div class="product">
-      <img src="https://via.placeholder.com/150" alt="Produit 4" />
+      <img src="https://via.placeholder.com/150" alt="Produit 4">
       <h3>Téléviseur 32”</h3>
       <p>95 000 FCFA</p>
     </div>
@@ -131,4 +166,4 @@
   </footer>
 
 </body>
-                      </html>
+      </html>
